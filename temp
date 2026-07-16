@@ -1,0 +1,7 @@
+Hi team,
+Please find attached v2 of the Concur–SAP S/4 (on-premise) Direct Connection runbook. Kindly go through it when you get a chance.
+The runbook was put together based on SAP's official Direct Connection documentation, structured into a step-by-step configuration guide covering the full setup — from connectivity and security to data mapping and posting. The goal was to have a single, self-contained document that anyone on the team can follow to configure the integration end to end.
+Next, once everyone has reviewed it, we can get together to walk through the steps, confirm our environment is ready, and plan a first connectivity test. Any gaps or corrections you spot along the way are welcome so we can finalize the document.
+Happy to set up a short call if that helps.
+Thanks,
+RDS
