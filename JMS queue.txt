@@ -1,0 +1,51 @@
+JMS queue before canonical mapping or after canonical mapping which is best?
+
+Short answer: queue the raw source payload, map to canonical after the queue — unless you need fan-out to multiple consumers, in which case flip it.
+The reason is CPI's retry semantics, not architectural elegance. Everything before the JMS receiver runs exactly once and is never replayed. Everything after it is re-executed on every retry and can be reset from the dead-letter state in Manage Message Queues. So the queue is effectively the line between "sender's problem" and "my problem."
+Queue first (raw payload on the queue)
+
+Mapping bugs — by far your most common failure — become recoverable without the sender. Fix the mapping, redeploy, reset the DLQ messages, they reprocess. No "can you resend last Tuesday's file?" conversation.
+Sender gets an ack as soon as the message is persisted. Minimal ingress latency, minimal chance of a sender-side timeout.
+You keep the source of truth. If the canonical model changes, you can re-derive.
+Cost: the queue is source-format-specific, so the consumer iFlow is coupled to the sender. Mapping/validation failures are async — the sender never hears about them, so your alerting has to be real, not decorative.
+
+Queue after (canonical payload on the queue)
+
+Map once, fan out to N receivers. If you have three targets, this is the only sane option — otherwise you're mapping the same source three times.
+Adding a consumer touches nothing upstream. Classic canonical-hub shape: source-specific iFlow → canonical queue → target-specific iFlow.
+Structural validation fails synchronously, so the sender gets a real 4xx and can fix its own data. Good when the sender is an app that can react.
+Cost: a mapping failure means the message never lands anywhere. If the sender can't or won't resend, it's gone. And a mapping defect that silently corrupts rather than throws is now baked into the queued payload with no way back.
+
+The practical middle ground that I'd actually reach for: light normalization before the queue (envelope strip, EDI/flat-file → XML, dedupe key extraction, cheap schema check), full canonical transform after. Queue holds something parseable and replayable but not yet semantically committed. You get sender feedback on garbage input without losing replay on real mapping logic.
+Two constraints worth checking before you decide:
+
+Queue count is finite. JMS queues are a capacity-limited resource on the tenant. A raw-payload-per-sender design proliferates queues fast; a canonical queue with fan-out is much cheaper on that budget. On a large landscape this often decides it for you regardless of the theory.
+Payload size and PII. Raw source payloads are usually bigger and carry fields you may not want sitting persisted in a queue. Canonical mapping is often where you drop them.
+
+
+which is best and give valid points to support that?
+Queue first — raw (or lightly normalized) payload before canonical mapping. That's the better default for CPI, and the exception (fan-out to multiple receivers) is narrow enough that you should treat it as the deviation, not the baseline.
+The supporting points:
+1. It puts the queue where the failure is. Empirically, mapping is where iFlows break — field-level nulls, unexpected cardinality, a new segment the sender added without telling you, code-value gaps. Connectivity failures are transient and self-heal on retry; mapping failures need a code change. Only queue-first lets a code change be followed by a replay. Queue-after means a mapping defect destroys the message with the sender as your only recovery path.
+2. Recovery without the sender is the whole point of asynchrony. If you have to phone the sender to resend, you've built a synchronous interface with extra steps. Queue-first gives you Manage Message Queues → reset → reprocess, all within your own operational control. Queue-after gives you an incident with a dependency on someone else's SLA.
+3. Ingress is the fragile part of the contract. Sender-side timeouts, connection limits, and file-drop windows are where you lose messages irretrievably. Persist as early as possible, ack immediately, then do the expensive work behind the queue. Canonical mapping in the ingress path means your sender's timeout budget now includes your XSLT.
+4. The raw payload is the only true source of truth. Canonical models change — a new field, a changed enumeration, a corrected mapping rule. If you've queued canonical, you can never re-derive; the pre-mapping information is gone. Queue-first means a canonical model revision can be applied retroactively to anything still in flight or in DLQ.
+5. Silent corruption is worse than loud failure. A mapping bug that throws is visible. A mapping bug that quietly writes the wrong cost center is not — and if that's what's sitting on the queue, you've persisted the corruption and lost the evidence. Queue-first keeps the original alongside the audit trail.
+6. It matches CPI's actual retry semantics. Pre-JMS-receiver runs once, never replayed. Post-JMS runs on every retry. Any logic you want to be able to fix-and-rerun must sit after the queue. Canonical mapping is precisely that logic. Placing it before the queue is placing it in the one region of the iFlow you can never re-execute.
+Where this flips: genuine fan-out — one source, three-plus independent receivers. Then map once to canonical and let consumers subscribe, because mapping N times per target is worse than losing replay. Also flip if you're queue-budget-constrained on the tenant and a raw-per-sender design would proliferate queues past what you can afford.
+The refinement I'd hold to: don't queue completely raw. Strip the envelope, convert flat-file/EDI to XML, extract the dedupe/correlation key, run a cheap structural check — then queue. That way garbage input still gets a synchronous 4xx back to the sender, but everything that requires actual business logic stays replayable. This is the version I'd defend in a design review.
+
+
+what is the best practice for queue before mapping or after mapping
+You've asked this three ways now, so let me give you the part I hadn't yet: what SAP actually documents, rather than my reasoning again.
+SAP's guidance in the JMS asynchronous messaging blog is explicit, and it answers your question directly:
+
+Do not use intermediate JMS queues in one end-to-end scenario. The recommendation is to use one queue after the message is received from the sender system and one directly before the message is sent to the receiver system. Depending on the scenario, one JMS queue could be sufficient as well.
+
+Unpacked, that's:
+Queue #1 — immediately after the sender adapter, before mapping. This is the documented position, and it matches what I argued: persist first, ack the sender, then do the work behind the queue. Mapping sits after this queue, so it's replayable.
+Queue #2 — after mapping, immediately before the receiver call. Optional, and only if you need to decouple the receiver call itself (unreliable target, throttling, backoff on a flaky backend).
+Not both, if one will do. For most point-to-point flows one queue is sufficient, and it goes at the ingress.
+The thing SAP explicitly warns against is what you might be reaching for — a queue "in the middle," sprinkled between processing steps as a checkpoint. That's the intermediate-queue anti-pattern: it burns your queue budget, doubles persistence overhead and encryption cost, and gives you multiple points where a replay leaves the flow in a half-processed state.
+So: before mapping is the best practice, and it's SAP's own recommendation, not just a design opinion. The two-queue variant (ingress + pre-receiver) is the sanctioned extension when the receiver needs its own decoupling — with mapping in between the two.
+Caveats that still stand: this guidance was written for non-exclusive queues, and exclusive queues (2501+) are functionally different enough that SAP flags the recommendations may not carry over. And genuine fan-out to multiple receivers remains the case where you map to canonical first and queue the canonical payload — that's outside the shape this recommendation describes.
