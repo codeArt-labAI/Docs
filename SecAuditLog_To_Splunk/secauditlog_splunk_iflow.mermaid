@@ -1,0 +1,50 @@
+flowchart TD
+  SCHED["External Scheduler<br/>BTP Job Scheduler / Control-M"]
+  SCHED -. "POST every 15 min" .-> S1
+
+  subgraph MAIN["Integration Process (main)"]
+    direction TB
+    S1["Step 1 - HTTPS Sender<br/>/extract/secauditlog<br/>cert or OAuth2, custom role"]
+    S8a{"Step 8 - Lock free?<br/>concurrency guard"}
+    S1 --> S8a
+    S8a -- "No: run in progress" --> RX["Reply 200 - skip this run"]
+    S8a -- "Yes" --> S8b["Set Data Store lock"]
+    S8b --> S2["Step 2 - Content Modifier<br/>runStartTime UTC<br/>pageSize, pageSkip=0"]
+    S2 --> S3["Step 3 - Data Store GET<br/>SecAuditLog_LastRun"]
+    S3 --> R1{"First run?"}
+    R1 -- "Yes" --> BOOT["Bootstrap lower bound<br/>now-15m"]
+    R1 -- "No" --> S4["Step 4 - Content Modifier<br/>build filter: TS gt lastHW and TS le runStartTime<br/>orderby asc, select"]
+    BOOT --> S4
+    S4 --> S5["Step 5 - Looping Process Call<br/>loop while more pages, max-iter cap"]
+    S5 --> O1
+    O3 --> MORE{"More pages?<br/>odata.nextLink / count == pageSize"}
+    MORE -- "Yes: pageSkip += pageSize" --> O1
+    MORE -- "No" --> S7["Step 7 - Data Store WRITE<br/>SecAuditLog_LastRun = runStartTime"]
+    S7 --> S8c["Release lock"]
+    S8c --> REPLY["Reply 200"]
+  end
+
+  subgraph LIP["Local Integration Process (per page) - Step 6"]
+    direction TB
+    O1["6a - OData V4 Request-Reply<br/>Query GET, top/skip"]
+    O1 --> O2["6b - Map to Splunk HEC JSON<br/>NDJSON events"]
+    O2 --> O3["6c - HTTPS Receiver to Splunk HEC<br/>/services/collector/event"]
+  end
+
+  subgraph EXC["Exception Subprocess - Step 9"]
+    direction TB
+    E1["Alert (mail / Slack)"]
+    E1 --> E2["Do NOT update high-water"]
+    E2 --> E3["Write error marker, release lock"]
+  end
+
+  DS[("Data Store<br/>SEC_AUDIT_DELTA")]
+  ODATA["S/4HANA Cloud<br/>OData V4 - Security Audit Log"]
+  SPLUNK["Splunk HEC"]
+
+  S8b -. "lock" .-> DS
+  S3 -. "get high-water" .-> DS
+  S7 -. "upsert high-water" .-> DS
+  O1 -. "GET page" .-> ODATA
+  O3 -. "POST events" .-> SPLUNK
+  MAIN -. "any step throws" .-> EXC
