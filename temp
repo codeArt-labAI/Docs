@@ -1,0 +1,11 @@
+Wanted to give you a quick summary of the Concur–SAP S/4 integration setup and where I'll need support from other teams.
+
+I'll be responsible for the overall Concur–SAP integration configuration — setting up the connection, coordinating the integration between Concur and SAP, preparing/maintaining the runbook, and driving the end-to-end testing.
+
+To complete the setup, I'll need support from a few teams:
+
+Basis team – for connectivity, certificates/SSL, RFC and web service endpoints, and system-level configuration on the SAP side.
+Security team – for user IDs, roles, and authorizations required for the integration.
+Finance team – for financial data mapping, posting configuration, cost object mapping, and account determination.
+
+Once we have the right people lined up, I can share the runbook and we can plan the configuration and first connectivity test. Could you help connect me with the respective SPOCs from these teams?
