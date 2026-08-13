@@ -13,3 +13,45 @@ Connection: keep-alive
 nslookup ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
 Test-NetConnection ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com -Port 443
 curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com/http/extract/secauditlog/v1
+
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Windows\system32> nslookup ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+Server:  UnKnown
+Address:  10.3.100.90
+
+Non-authoritative answer:
+Name:    cf-proxy-cf-ap10-06b5d40dd8d94686.elb.ap-southeast-2.amazonaws.com
+Addresses:  13.211.73.244
+          13.236.220.84
+          3.105.95.184
+Aliases:  ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+
+PS C:\Windows\system32> Test-NetConnection ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com -Port 443
+
+
+ComputerName     : ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+RemoteAddress    : 13.236.220.84
+RemotePort       : 443
+InterfaceAlias   : Wi-Fi
+SourceAddress    : 192.168.7.172
+TcpTestSucceeded : True
+
+
+
+PS C:\Windows\system32> curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com/http/extract/secauditlog/v1
+* Host ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 13.236.220.84, 13.211.73.244, 3.105.95.184
+*   Trying 13.236.220.84:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* Recv failure: Connection was reset
+* schannel: failed to receive handshake, SSL/TLS connection failed
+* closing connection #0
+curl: (35) Recv failure: Connection was reset
+PS C:\Windows\system32>
