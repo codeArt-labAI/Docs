@@ -1,0 +1,10 @@
+GET https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com/http/extract/secauditlog/v1
+Error: read ECONNRESET
+Request Headers
+Authorization: Basic UzAwMjgwOTI2MTg6SnVzdGRvaXQxMjM0NTYj
+User-Agent: PostmanRuntime/7.56.0
+Accept: */*
+Postman-Token: a464dc1f-33cd-453d-a5f5-8eaa89a096be
+Host: ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
