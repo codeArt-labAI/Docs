@@ -60,3 +60,175 @@ PS C:\Windows\system32>
 curl.exe -v https://account.hana.ondemand.com
 curl.exe -v -k https://13.236.220.84
 netsh winhttp show proxy
+
+PS C:\Windows\system32> curl.exe -v https://account.hana.ondemand.com
+* Host account.hana.ondemand.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 155.56.210.43
+*   Trying 155.56.210.43:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server did not agree on a protocol. Uses default.
+* Established connection to account.hana.ondemand.com (155.56.210.43 port 443) from 192.168.7.172 port 57040
+* using HTTP/1.x
+> GET / HTTP/1.1
+> Host: account.hana.ondemand.com
+> User-Agent: curl/8.21.0
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200
+< Cache-Control: private, no-store, no-cache, must-revalidate
+< Content-Security-Policy: img-src 'self' https://help.sap.com https://developers.sap.com https://*.qualtrics.com https://sapui5.hana.ondemand.com https://accounts.sap.com data:; script-src 'nonce-78394e61-dedb-40dc-a0f8-3f95fba26391' 'unsafe-eval' 'self' https://sapui5.hana.ondemand.com https://webassistant.enable-now.cloud.sap https://*.qualtrics.com https://*.built-in-support.ondemand.com https://*.built-in-support.cloud.sap https://accounts.sap.com; child-src 'self' https://*.sap.com https://authn.hana.ondemand.com https://*.qualtrics.com https://*.built-in-support.ondemand.com https://*.built-in-support.cloud.sap blob: ; worker-src 'self' blob: ; style-src 'unsafe-inline' 'self' https://*.bootstrapcdn.com https://sapui5.hana.ondemand.com https://webassistant.enable-now.cloud.sap https://*.qualtrics.com https://accounts.sap.com; frame-ancestors 'self'; base-uri 'none';
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: no-referrer
+< Permissions-Policy: camera=(),fullscreen=(),geolocation=(),microphone=()
+< Pragma: private, no-store, no-cache, must-revalidate
+< Expires: 0
+< vary: accept-encoding
+< Content-Type: text/html;charset=UTF-8
+< Content-Length: 3046
+< Date: Thu, 13 Aug 2026 02:32:56 GMT
+< Server: SAP
+< Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+< Origin-Trial: Avu6rn7emV5gK8gvyGHlX8TMqM9uo1FacP2j/RWTq+8j+yKnqcTO0TQh0bXJ/7QntxD4/JzXv8aXoqxxZQuqXgYAAABdeyJvcmlnaW4iOiJodHRwczovL29uZGVtYW5kLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHBjZCIsImV4cGlyeSI6MTczNTM0Mzk5OSwiaXNTdWJkb21haW4iOnRydWV9
+< Critical-Origin-Trial: Tpcd
+<
+<!DOCTYPE html>
+<html lang="" data-cockpit-page="cockpitPageStillLoading">
+<head>
+<title>SAP BTP Cockpit</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<style>
+/**
+ * CSS styles needed for Cockpit loading
+ */
+
+div#cockpitLoading, div#cockpitLoadingGlobalAccount, div#unsupportedBrowserMsg, div#noScriptMessage {
+        font-size: 16px;
+        font-family: sans-serif;
+        font-weight: bold;
+        color: #666;
+        text-align: center;
+}
+
+div#cockpitLoading, div#cockpitLoadingGlobalAccount {
+        margin-top: 200px;
+        margin-bottom: 2em;
+}
+
+div#noScriptMessage {
+        color: #000;
+}
+
+div#unsupportedBrowser {
+        margin-top: 200px;
+        margin-bottom: 2em;
+        display: none;
+        text-align: center;
+}
+
+div#supportedBrowserLink {
+        text-align: center;
+}
+
+div#loadError {
+        margin-top: 200px;
+        margin-bottom: 2em;
+        display: none;
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: italic;
+        color: rgb(192, 0, 0);
+        text-align: center;
+}
+</style>
+<!-- This web application uses images from http://www.gosquared.com/ -->
+<!-- Copyright (c) 2013 Go Squared Ltd. http://www.gosquared.com/ -->
+<link rel="license" href="/images/gosquared/LICENSE.txt" />
+</head>
+<body role="application" class="sapUiSizeCompact">
+
+        <div id="cockpitLoadingBusyIndicator">
+                <div id="cockpitLoading">SAP BTP Cockpit is loading, please wait...</div>
+                <div id="cockpitLoadingGlobalAccount" style="display: none">Loading your global account...</div>
+        </div>
+        <noscript>
+                <div id="noScriptMessage">SAP BTP Cockpit cannot be displayed because JavaScript is not enabled; please enable JavaScript in your browser and try again.</div>
+        </noscript>
+        <div id="unsupportedBrowser" style="display: none">
+                <div id="unsupportedBrowserMsg" style="padding: 20px"></div>
+                <form>
+                        <input type="button" id="ignoreBrowserButton" value="">
+                        <input type="checkbox" id="suppressBrowserCheck">
+                        <span id="checkboxlabel"></span>
+                </form>
+        </div>
+        <div id="loadError" style="display: none"></div>
+        <div id="shellArea"></div>
+
+
+<script type="text/javascript" nonce="78394e61-dedb-40dc-a0f8-3f95fba26391">
+                // Set the cachebuster token for overwriteFormatMessage
+                window.cachebusterToken = '/~1786024528604~';
+</script>
+
+<script id="sap-ui-bootstrap"
+        src="https://sapui5.hana.ondemand.com/1.148.1/resources/sap-ui-core.js"
+        crossorigin="anonymous"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-language="en-US"
+        data-sap-ui-frameOptions="deny"
+        data-sap-ui-bindingsyntax="complex"
+        data-sap-ui-libs="sap.m,sap.ui.layout,sap.tnt,sap.ui.unified,cockpit.core,cockpit.common,cockpit.shared,cockpit.globalaccount"
+        data-sap-ui-preload="async"
+        data-sap-ui-appCacheBuster="/"
+        data-sap-ui-resourceroots='{
+                "sap.dfa.help": "/sap/dfa/help/",
+                "cockpit": "/resources/~1786024528604~/cockpit",
+                "@btp": "/resources/@btp",
+                "thirdparty": "/thirdparty",
+                "com.sap.core.account": "/"
+        }'
+        data-sap-ui-onInit="module:cockpit/core/loadCockpit"
+        data-cockpit-title="SAP BTP Cockpit"
+        data-bootstrap-call="/anonymousAjax/getPublicBootstrapConfiguration"
+        data-csrftoken="">
+</script>
+
+</body>
+</html>
+* Connection #0 to host account.hana.ondemand.com:443 left intact
+PS C:\Windows\system32> curl.exe -v -k https://13.236.220.84
+*   Trying 13.236.220.84:443...
+* schannel: disabled automatic use of client certificate
+* schannel: using IP address, SNI is not supported by OS.
+* ALPN: curl offers http/1.1
+* ALPN: server did not agree on a protocol. Uses default.
+* Established connection to 13.236.220.84 (13.236.220.84 port 443) from 192.168.7.172 port 57041
+* using HTTP/1.x
+> GET / HTTP/1.1
+> Host: 13.236.220.84
+> User-Agent: curl/8.21.0
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 404 Not Found
+< cache-control: no-cache, no-store
+< content-type: text/plain; charset=utf-8
+< x-cf-routererror: unknown_route
+< x-content-type-options: nosniff
+< date: Thu, 13 Aug 2026 02:32:56 GMT
+< content-length: 65
+< strict-transport-security: max-age=31536000; includeSubDomains; preload;
+<
+404 Not Found: Requested route ('13.236.220.84') does not exist.
+* Connection #0 to host 13.236.220.84:443 left intact
+PS C:\Windows\system32> netsh winhttp show proxy
+
+Current WinHTTP proxy settings:
+
+    Direct access (no proxy server).
+
+PS C:\Windows\system32>
