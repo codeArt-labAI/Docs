@@ -276,3 +276,17 @@ PS C:\Windows\system32>
 
 curl.exe https://api.ipify.org
 curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+PS C:\Windows\system32> curl.exe https://api.ipify.org
+115.70.61.99
+PS C:\Windows\system32> curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+* Host ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 13.211.73.244, 3.105.95.184, 13.236.220.84
+*   Trying 13.211.73.244:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* Recv failure: Connection was reset
+* schannel: failed to receive handshake, SSL/TLS connection failed
+* closing connection #0
+curl: (35) Recv failure: Connection was reset
+PS C:\Windows\system32>
