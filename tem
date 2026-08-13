@@ -272,3 +272,7 @@ PS C:\Windows\system32> curl.exe -v https://ss-integration-suite-non-prod.integr
 <
 <html><head><link rel="shortcut icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /><script nonce="0AoCkHduPvXKtKC/wHhjPA==">document.cookie="fragmentAfterLogin="+encodeURIComponent(location.hash)+";path=/;";document.cookie="locationAfterLogin="+encodeURIComponent(location.href.split('#')[0].split(location.host)[1])+";path=/;";document.cookie="signature=kFaGEfBTEC0lk2%2BSKLqiAVeVHqI%3D;path=/;";location="https://ss-integration-suite-non-prod.authentication.ap10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-it-prov!t80&redirect_uri=https%3A%2F%2Fss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com%2Flogin%2Fcallback%3FauthType%3Dxsuaa"</script></head></html>* Connection #0 to host ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com:443 left intact
 PS C:\Windows\system32>
+
+
+curl.exe https://api.ipify.org
+curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
