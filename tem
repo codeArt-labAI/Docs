@@ -232,3 +232,6 @@ Current WinHTTP proxy settings:
     Direct access (no proxy server).
 
 PS C:\Windows\system32>
+
+
+curl.exe -v https://ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com
