@@ -55,3 +55,8 @@ PS C:\Windows\system32> curl.exe -v https://ss-integration-suite-non-prod.it-cpi
 * closing connection #0
 curl: (35) Recv failure: Connection was reset
 PS C:\Windows\system32>
+
+
+curl.exe -v https://account.hana.ondemand.com
+curl.exe -v -k https://13.236.220.84
+netsh winhttp show proxy
