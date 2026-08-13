@@ -8,3 +8,8 @@ Postman-Token: a464dc1f-33cd-453d-a5f5-8eaa89a096be
 Host: ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
 Accept-Encoding: gzip, deflate, br
 Connection: keep-alive
+
+
+nslookup ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com
+Test-NetConnection ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com -Port 443
+curl.exe -v https://ss-integration-suite-non-prod.it-cpi002-rt.cfapps.ap10.hana.ondemand.com/http/extract/secauditlog/v1
