@@ -235,3 +235,40 @@ PS C:\Windows\system32>
 
 
 curl.exe -v https://ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com
+
+
+PS C:\Windows\system32> curl.exe -v https://ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com
+* Host ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 13.211.73.244, 3.105.95.184, 13.236.220.84
+*   Trying 13.211.73.244:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Established connection to ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com (13.211.73.244 port 443) from 192.168.7.172 port 63475
+* using HTTP/1.x
+> GET / HTTP/1.1
+> Host: ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com
+> User-Agent: curl/8.21.0
+> Accept: */*
+>
+* Request completely sent off
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+< HTTP/1.1 200 OK
+< cache-control: no-cache, no-store, must-revalidate
+< content-security-policy: script-src 'self' 'nonce-0AoCkHduPvXKtKC/wHhjPA=='; frame-ancestors *
+< content-type: text/html; charset=utf-8
+< date: Thu, 13 Aug 2026 02:43:29 GMT
+< x-frame-options: SAMEORIGIN
+< x-request-id: 9f9f9448-fd8e-4160-6226-432a491840a0
+< x-vcap-request-id: 9f9f9448-fd8e-4160-6226-432a491840a0
+< transfer-encoding: chunked
+< strict-transport-security: max-age=31536000; includeSubDomains; preload;
+<
+<html><head><link rel="shortcut icon" href="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" /><script nonce="0AoCkHduPvXKtKC/wHhjPA==">document.cookie="fragmentAfterLogin="+encodeURIComponent(location.hash)+";path=/;";document.cookie="locationAfterLogin="+encodeURIComponent(location.href.split('#')[0].split(location.host)[1])+";path=/;";document.cookie="signature=kFaGEfBTEC0lk2%2BSKLqiAVeVHqI%3D;path=/;";location="https://ss-integration-suite-non-prod.authentication.ap10.hana.ondemand.com/oauth/authorize?response_type=code&client_id=sb-it-prov!t80&redirect_uri=https%3A%2F%2Fss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com%2Flogin%2Fcallback%3FauthType%3Dxsuaa"</script></head></html>* Connection #0 to host ss-integration-suite-non-prod.integrationsuite.cfapps.ap10.hana.ondemand.com:443 left intact
+PS C:\Windows\system32>
